@@ -1,15 +1,15 @@
-# Spotify labels
+# BeReel
 
-Browse Spotify by record label, the way Rdio used to let you. This adds a Labels page to the Spotify desktop app. Pick a label and you get its catalog, newest first.
+Search Spotify by record label, the way Rdio used to let you. BeReel adds a page to the Spotify desktop app. Pick a label and you get its catalog, newest first.
 
 It's a [Spicetify](https://spicetify.app) custom app. Spicetify modifies the Spotify desktop app so it can load extra pages and scripts. It runs inside the regular Spotify app, not in a browser.
 
 ## What it does
 
-- Adds a Labels item to Spotify's left sidebar. Type a label name, like "Warp Records" or "Cellar Live", to see every release on it, newest first. A dropdown narrows the list to albums, or to singles and EPs.
+- Adds a BeReel item to Spotify's left sidebar. Type a label name, like "Warp Records" or "Cellar Live", to see every release on it, newest first. A dropdown narrows the list to albums, or to singles and EPs.
 - Shows the label name on every album page, after the release year (for example, "Aphex Twin • 1992 • R&S Records"). Click it to open that label's page.
 - Adds "Browse label" to the right-click menu on albums.
-- Lets you follow labels. The Labels home page then shows releases from the labels you follow from the last 90 days.
+- Lets you follow labels. The BeReel home page then shows releases from the labels you follow from the last 90 days.
 - Hides albums that Spotify has probably mislabeled. A checkbox brings them back. See "How it works" below for the details.
 
 ## Requirements
@@ -40,13 +40,13 @@ It's a [Spicetify](https://spicetify.app) custom app. Spicetify modifies the Spo
 
    This copies `src/` into `~/.config/spicetify/CustomApps/labels`, turns the app on in Spicetify's config, and reapplies Spicetify. Spotify restarts again.
 
-If Labels doesn't appear in the sidebar, quit Spotify fully with Cmd+Q and open it again.
+If BeReel doesn't appear in the sidebar, quit Spotify fully with Cmd+Q and open it again.
 
 ## Using it
 
-- Labels page: click Labels in the sidebar and search for a label. Results appear as they're found. The first visit to a big label takes a minute or two (Warp is about 1,200 releases). Later visits are much faster.
+- BeReel page: click BeReel in the sidebar and search for a label. Results appear as they're found. The first visit to a big label takes a minute or two (Warp is about 1,200 releases). Later visits are much faster.
 - From an album: click the label name in the album header, or right-click the album and choose "Browse label".
-- Follow: click Follow on a label's page. Followed labels and their recent releases show on the Labels home page, which you get to by clicking Labels in the sidebar.
+- Follow: click Follow on a label's page. Followed labels and their recent releases show on the BeReel home page, which you get to by clicking BeReel in the sidebar.
 - "Similar names" under the header lists other labels that came up in the search. Click one to open it. This helps when a label goes by more than one name, or when you typed part of a name.
 
 ## After a Spotify update
@@ -87,16 +87,16 @@ If you ask Spotify for too much too fast, it returns HTTP 429, and the rest of t
 ### Files
 
 - `src/api.js` handles search, album lookups, label matching, the cache and retries. Every call to Spotify's internal API is in this file, so it's the one to fix when a Spotify update breaks something.
-- `src/index.js` is the Labels page: the search box, label pages, the feed and the album cards.
+- `src/index.js` is the BeReel page: the search box, label pages, the feed and the album cards.
 - `src/follows.js` stores which labels you follow.
 - `src/extension.js` runs on every page. It adds the label link to album headers and the "Browse label" menu item. It has its own small album lookup, because Spicetify loads extensions separately from the app.
-- `src/style.css` holds the styles for the Labels page.
+- `src/style.css` holds the styles for the BeReel page.
 - `src/manifest.json` is the Spicetify app manifest: the name, the sidebar icons and which files to load.
 
 ## Known limits
 
 - Labels with "&" or one-letter words in the name, like R&S Records, barely work. Spotify's label search seems to drop those characters, so it returns mostly other labels.
 - The ℗ check sometimes hides real releases, when the ℗ line names a parent company or a sister label. For example, "Reel to Real" albums get hidden on the Cellar Live page. Use the checkbox to see them.
-- The search query only gets registered once Spotify's own Search page has loaded. The app saves the last copy it saw and has a built-in fallback. If a Spotify update changes the query, the Labels page says so. Open Spotify's Search page once, then try again.
+- The search query only gets registered once Spotify's own Search page has loaded. The app saves the last copy it saw and has a built-in fallback. If a Spotify update changes the query, the BeReel page says so. Open Spotify's Search page once, then try again.
 - Pre-release albums (announced but not out yet) aren't included.
 - Modifying the Spotify app is against Spotify's terms of service.
