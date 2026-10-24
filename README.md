@@ -15,30 +15,20 @@ It's a [Spicetify](https://spicetify.app) custom app. Spicetify modifies the Spo
 ## Requirements
 
 - macOS with the Spotify desktop app. Spicetify also supports Windows and Linux, but this has only been tested on macOS.
-- [Homebrew](https://brew.sh), to install Spicetify.
+- [Homebrew](https://brew.sh). `make install` uses it to install Spicetify.
 - `make` and `rsync`, which come with macOS.
 
 ## Install
 
-1. Install Spicetify:
+From this folder, run:
 
-   ```
-   brew install spicetify-cli
-   ```
+```
+make install
+```
 
-2. Let Spicetify back up Spotify and patch it. Spotify restarts during this step.
+This installs Spicetify with Homebrew if it's missing, and has Spicetify back up and patch Spotify if it hasn't yet. Then it copies `src/` into `~/.config/spicetify/CustomApps/labels`, turns the app on in Spicetify's config, and reapplies Spicetify. Spotify restarts during this, possibly twice.
 
-   ```
-   spicetify backup apply
-   ```
-
-3. From this folder, install the app:
-
-   ```
-   make install
-   ```
-
-   This copies `src/` into `~/.config/spicetify/CustomApps/labels`, turns the app on in Spicetify's config, and reapplies Spicetify. Spotify restarts again.
+To install only the dependencies, run `make deps`.
 
 If BeReel doesn't appear in the sidebar, quit Spotify fully with Cmd+Q and open it again.
 
