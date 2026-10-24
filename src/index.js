@@ -16,6 +16,9 @@ const TYPE_FILTERS = {
 	singles: (a) => a.type === "SINGLE" || a.type === "EP",
 };
 
+const SHOW_MISMATCHES_KEY = "labels:showMismatches";
+const getShowMismatches = () => Spicetify.LocalStorage.get(SHOW_MISMATCHES_KEY) === "true";
+
 function render() {
 	return react.createElement(LabelsApp);
 }
@@ -76,12 +79,15 @@ function LabelPage({ label }) {
 	const [progress, setProgress] = useState({ matches: [], checked: 0, otherLabels: {}, done: false });
 	const [following, setFollowingState] = useState(isFollowing(label));
 	const [typeFilter, setTypeFilter] = useState("all");
+	const [showMismatches, setShowMismatches] = useState(getShowMismatches());
 
 	useEffect(() => {
 		findLabelAlbums(label, { onProgress: (p) => !isCancelled() && setProgress(p), isCancelled });
 	}, [label]);
 
-	const albums = sortNewestFirst(progress.matches.filter(TYPE_FILTERS[typeFilter]));
+	const ofType = progress.matches.filter(TYPE_FILTERS[typeFilter]);
+	const hidden = showMismatches ? 0 : ofType.filter((a) => a.copyrightMismatch).length;
+	const albums = sortNewestFirst(showMismatches ? ofType : ofType.filter((a) => !a.copyrightMismatch));
 	const others = Object.entries(progress.otherLabels)
 		.sort((a, b) => b[1] - a[1])
 		.slice(0, 12);
@@ -110,6 +116,19 @@ function LabelPage({ label }) {
 				react.createElement("option", { value: "all" }, "All releases"),
 				react.createElement("option", { value: "albums" }, "Albums"),
 				react.createElement("option", { value: "singles" }, "Singles and EPs")
+			),
+			react.createElement(
+				"label",
+				{ className: "labels-toggle", title: "Albums whose ℗ line names a different company than the label" },
+				react.createElement("input", {
+					type: "checkbox",
+					checked: showMismatches,
+					onChange: (e) => {
+						Spicetify.LocalStorage.set(SHOW_MISMATCHES_KEY, String(e.target.checked));
+						setShowMismatches(e.target.checked);
+					},
+				}),
+				"Show albums with a different ℗ owner"
 			)
 		),
 		react.createElement(
@@ -118,7 +137,8 @@ function LabelPage({ label }) {
 			progress.error ||
 				(progress.done
 					? `${albums.length} releases`
-					: `${albums.length} releases found, checked ${progress.checked} search results...`)
+					: `${albums.length} releases found, checked ${progress.checked} search results...`) +
+					(hidden ? ` (${hidden} hidden because the ℗ line names someone else)` : "")
 		),
 		others.length > 0 &&
 			react.createElement(
@@ -147,7 +167,7 @@ function HomePage() {
 					fromYear,
 					isCancelled,
 					onProgress: ({ matches }) => {
-						byLabel[label] = matches.filter((a) => a.date && new Date(a.date) >= cutoff);
+						byLabel[label] = matches.filter((a) => a.date && new Date(a.date) >= cutoff && (getShowMismatches() || !a.copyrightMismatch));
 						if (!isCancelled()) setFeed(sortNewestFirst(Object.values(byLabel).flat()));
 					},
 				});
@@ -221,6 +241,8 @@ function AlbumCard({ album, showLabel }) {
 			{ className: "labels-card-sub" },
 			[year, TYPE_NAMES[album.type]].filter(Boolean).join(" · ")
 		),
+		album.copyrightMismatch &&
+			react.createElement("div", { className: "labels-card-sub labels-card-warning", title: album.copyright }, `℗ ${album.copyright.replace(/^(\(P\)|℗)?\s*\d{4}\s*/, "")}`),
 		showLabel &&
 			react.createElement(
 				"a",
