@@ -1,4 +1,8 @@
-# BeReel
+# BeReel: Long Live Rdio! 
+
+One of the features I loved most about Rdio, and still miss, was the ability to search by record label. I'd discover an artist or album I liked, get curious about what else the label had released, and go down a rabbit hole. I discovered SO MUCH great music this way.
+
+This app brings that functionality to Spotify Desktop, my streaming app of choice, and makes it a little easier to stumble across your next favourite record.
 
 Search Spotify by record label, the way Rdio used to let you. BeReel adds a page to the Spotify desktop app. Pick a label and you get its catalog, newest first.
 
