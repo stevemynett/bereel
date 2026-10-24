@@ -11,7 +11,7 @@ It's a [Spicetify](https://spicetify.app) custom app. Spicetify modifies the Spo
 ## What it does
 
 - Adds a BeReel item to Spotify's left sidebar. Type a label name, like "Warp Records" or "Cellar Live", to see every release on it, newest first. A dropdown narrows the list to albums, or to singles and EPs.
-- Shows the label name on every album page, after the release year (for example, "Aphex Twin • 1992 • R&S Records"). Click it to open that label's page.
+- Shows the label name on every album page, after the release year (for example, "Aphex Twin • 1992 • R&S Records"). Click it to open that label's page. If the album's ℗ line names someone else, the header shows the ℗ owner first, like "SmallsLIVE (listed as Cellar Live)", and "Browse label" opens the ℗ owner.
 - Adds "Browse label" to the right-click menu on albums.
 - Lets you follow labels. The BeReel home page then shows releases from the labels you follow from the last 90 days.
 - Hides albums that Spotify has probably mislabeled. A checkbox brings them back. See "How it works" below for the details.
